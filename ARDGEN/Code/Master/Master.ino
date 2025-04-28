@@ -1,3 +1,34 @@
+/*
+  Arduino I2C Master Controller
+  ------------------------------
+
+  This sketch acts as a master controller communicating with an ATmega328-based slave device over the I2C bus.
+
+  Functionality:
+  - Presents a simple menu over Serial Monitor (USB) to the user.
+  - Allows the user to send different commands to the slave:
+      1. Get Device ID
+      2. Get Available Data Size
+      3. Request Sensor Data
+      4. Get Device Name
+  - Reads and displays the response from the slave on the Serial Monitor.
+
+  Communication Details:
+  - Master uses I2C (Wire library) with slave address 0x08.
+  - Slave device responds to different command codes with the requested information.
+  - The master also handles basic error checking if data is not available.
+
+  Usage:
+  - Open the Serial Monitor at 9600 baud.
+  - Select options by entering numbers 1–4 to interact with the slave device.
+  - Sensor data is formatted and printed to the Serial Monitor.
+
+  Author: Neeraj Joshi
+  Date: 29/April/2025
+
+  Note: Ensure that pull-up resistors (typically 4.7kΩ) are present on SDA and SCL lines for reliable I2C communication.
+*/
+
 #include <Wire.h>
 
 #define SLAVE_ADDRESS 8
