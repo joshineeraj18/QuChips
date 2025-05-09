@@ -1,0 +1,27 @@
+Output: Gerber Files
+Type  : Gerber
+From  : Variant [[No Variations]] of Project [PCB2A.PrjPcb]
+   Generated File[PCB2A.GTO]
+   Generated File[PCB2A.GTP]
+   Generated File[PCB2A.GTS]
+   Generated File[PCB2A.GTL]
+   Generated File[PCB2A.GBL]
+   Generated File[PCB2A.GBS]
+   Generated File[PCB2A.GBP]
+   Generated File[PCB2A.GBO]
+   Generated File[PCB2A.GM1]
+   Generated File[PCB2A.GM13]
+   Generated File[PCB2A.GM15]
+   Generated File[PCB2A.GPT]
+   Generated File[PCB2A.GPB]
+   Generated File[PCB2A.GD1]
+   Generated File[PCB2A.GG1]
+   Generated File[PCB2A.RUL]
+   Generated File[PCB2A.EXTREP]
+   Generated File[PCB2A.REP]
+
+
+Files Generated   : 18
+Documents Printed : 0
+
+Finished Output Generation At 13:33:54 On 10-02-2024
