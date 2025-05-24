@@ -32,14 +32,28 @@
 #include <Wire.h>
 
 #define SLAVE_ADDRESS 8
+#define BATTERY_BOARD_ADDR 0x12
+#define HAL_SENSOR_BOARD_ADDR_1 0x13
+#define HAL_SENSOR_BOARD_ADDR_2 0x14
+#define HAL_SENSOR_BOARD_ADDR_3 0x15
+
+
+uint16_t batteryRaw = 0;
+uint16_t halRaw_1 = 0;
+uint16_t halRaw_2 = 0;
+uint16_t halRaw_3 = 0;
+int a1Value = 0;
+char pcbDatabuffer[45];
 
 void setup() {
   Wire.begin(); // Join I2C bus as master
   Serial.begin(9600); // For printing menu and output
+  pinMode(A1, INPUT);
   delay(500); // Give time for setup
 }
 
 void loop() {
+  a1Value = analogRead(A1);
   showMenu();
   while (!Serial.available()) {
     // Wait for user input
@@ -112,6 +126,12 @@ void requestDataSize() {
 }
 
 void requestSensorData() {  
+
+  batteryRaw = requestPCBData(BATTERY_BOARD_ADDR);
+  halRaw_1 = requestPCBData(HAL_SENSOR_BOARD_ADDR_1);
+  halRaw_2 = requestPCBData(HAL_SENSOR_BOARD_ADDR_2);
+  halRaw_3 = requestPCBData(HAL_SENSOR_BOARD_ADDR_3);
+  
   // First get the data size
   Wire.beginTransmission(SLAVE_ADDRESS);
   Wire.write(2); // Command 2 to get size
@@ -134,12 +154,22 @@ void requestSensorData() {
   Wire.endTransmission();
 
   Wire.requestFrom(SLAVE_ADDRESS, size);
+
   
   Serial.print("Sensor Data: ");
   while (Wire.available()) {
     char c = Wire.read();
     Serial.print(c);
   }
+  Serial.println();  
+
+  snprintf(pcbDatabuffer, sizeof(pcbDatabuffer),"PCB Data: D[D1:%d,D2:%d,D3:%d,D4:%d,D5:%d]",(int)batteryRaw, (int)halRaw_1, (int)halRaw_2, (int)halRaw_3 , a1Value);
+
+  Serial.print(pcbDatabuffer);
+  
+  // Serial.print("Battery Raw: "); Serial.println(batteryRaw);
+  // Serial.print("HAL Sensor Raw: "); Serial.println(halRaw_1);
+
   Serial.println();
 }
 
@@ -156,4 +186,13 @@ void requestDeviceName() {
     Serial.print(c);
   }
   Serial.println();
+}
+
+uint16_t requestPCBData(uint8_t address) 
+{
+  Wire.requestFrom(address, (uint8_t)2);
+  if (Wire.available() == 2) {
+    return (Wire.read() << 8) | Wire.read();
+  }
+  return 0;
 }
